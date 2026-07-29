@@ -319,8 +319,6 @@ body {
 
 /* ==================== CUSTOM TIMER INPUTS ==================== */
 
-/* ==================== CUSTOM TIMER INPUTS ==================== */
-
 .custom-timer {
   display: flex;
   align-items: flex-end;
@@ -337,9 +335,21 @@ body {
   gap: 6px;
 }
 
+.input-group.name-group {
+  flex: 1;
+  min-width: 140px;
+  max-width: 200px;
+}
+
+.input-group.name-group input {
+  width: 100%;
+  text-align: left;
+  padding-left: 12px;
+}
+
 .input-group.btn-group {
   margin-left: 12px;
-  padding-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .input-group label {

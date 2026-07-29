@@ -4,6 +4,7 @@ import { TimerPreset } from '../types';
 
 const STORE_PATH = 'timers-store.json';
 const TIMERS_KEY = 'activeTimers';
+const FIRST_RUN_KEY = 'firstRun';
 
 const DEFAULT_TIMERS: TimerPreset[] = [
   { id: 1, name: '1 min', hours: 0, minutes: 1, seconds: 0 },
@@ -27,10 +28,9 @@ async function getStore(): Promise<Store> {
 }
 
 export function useTimers() {
-  const [timers, setTimers] = useState<TimerPreset[]>(DEFAULT_TIMERS);
+  const [timers, setTimers] = useState<TimerPreset[]>([]);
   const [loaded, setLoaded] = useState(false);
 
-  // Carrega do store ao montar
   useEffect(() => {
     let cancelled = false;
     
@@ -38,15 +38,30 @@ export function useTimers() {
       try {
         const store = await getStore();
         const saved = await store.get<TimerPreset[]>(TIMERS_KEY);
+        const firstRun = await store.get<boolean>(FIRST_RUN_KEY);
+        
         if (!cancelled) {
-          if (saved && saved.length > 0) {
+          if (saved) {
+            // Já tem dados salvos, usa eles (mesmo que vazio)
             setTimers(saved);
+          } else if (firstRun === undefined || firstRun === true) {
+            // Primeira vez: cria defaults e marca como não-first-run
+            setTimers(DEFAULT_TIMERS);
+            await store.set(FIRST_RUN_KEY, false);
+            await store.set(TIMERS_KEY, DEFAULT_TIMERS);
+            await store.save();
+          } else {
+            // Não é primeira vez e não tem timers salvos = usuário apagou todos
+            setTimers([]);
           }
           setLoaded(true);
         }
       } catch (e) {
         console.error('Failed to load timers:', e);
-        if (!cancelled) setLoaded(true);
+        if (!cancelled) {
+          setTimers([]);
+          setLoaded(true);
+        }
       }
     }
     
@@ -54,7 +69,6 @@ export function useTimers() {
     return () => { cancelled = true; };
   }, []);
 
-  // Salva no store sempre que timers mudar
   useEffect(() => {
     if (!loaded) return;
     

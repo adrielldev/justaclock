@@ -3,7 +3,8 @@ import { useTimers } from '../hooks/useTimers';
 import TimerItem from './TimerItem';
 
 export default function Timer() {
-  const { timers, loaded, addTimer, removeTimer } = useTimers();
+  const { timers, loaded, addTimer, removeTimer, resetToDefaults } = useTimers();
+  const [customName, setCustomName] = useState('');
   const [customHours, setCustomHours] = useState('');
   const [customMin, setCustomMin] = useState('');
   const [customSec, setCustomSec] = useState('');
@@ -15,13 +16,18 @@ export default function Timer() {
     
     if (h === 0 && m === 0 && s === 0) return;
     
-    const name = [
-      h > 0 ? `${h}h` : '',
-      m > 0 ? `${m}m` : '',
-      s > 0 ? `${s}s` : ''
-    ].filter(Boolean).join(' ') || 'Custom';
+    // Se não digitou nome, gera do tempo
+    let name = customName.trim();
+    if (!name) {
+      name = [
+        h > 0 ? `${h}h` : '',
+        m > 0 ? `${m}m` : '',
+        s > 0 ? `${s}s` : ''
+      ].filter(Boolean).join(' ') || 'Custom';
+    }
     
     addTimer({ name, hours: h, minutes: m, seconds: s });
+    setCustomName('');
     setCustomHours('');
     setCustomMin('');
     setCustomSec('');
@@ -39,6 +45,17 @@ export default function Timer() {
       <h2>Timers</h2>
       
       <div className="custom-timer">
+        <div className="input-group name-group">
+          <input
+            type="text"
+            placeholder="Timer name..."
+            value={customName}
+            onChange={e => setCustomName(e.target.value)}
+            maxLength={30}
+          />
+          <label>Name</label>
+        </div>
+        
         <div className="input-group">
           <input
             type="text"
