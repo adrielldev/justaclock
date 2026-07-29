@@ -3,7 +3,7 @@ import { useTimers } from '../hooks/useTimers';
 import TimerItem from './TimerItem';
 
 export default function Timer() {
-  const { timers, loaded, addTimer, removeTimer, resetToDefaults } = useTimers();
+  const { timers, loaded, addTimer, removeTimer } = useTimers();
   const [customHours, setCustomHours] = useState('');
   const [customMin, setCustomMin] = useState('');
   const [customSec, setCustomSec] = useState('');
