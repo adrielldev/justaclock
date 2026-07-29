@@ -319,6 +319,8 @@ body {
 
 /* ==================== CUSTOM TIMER INPUTS ==================== */
 
+/* ==================== CUSTOM TIMER INPUTS ==================== */
+
 .custom-timer {
   display: flex;
   align-items: flex-end;
@@ -333,6 +335,11 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 6px;
+}
+
+.input-group.btn-group {
+  margin-left: 12px;
+  padding-bottom: 16px;
 }
 
 .input-group label {
@@ -369,7 +376,6 @@ body {
   opacity: 0.5;
 }
 
-/* Remove as setinhas do input number */
 .custom-timer input::-webkit-outer-spin-button,
 .custom-timer input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -385,10 +391,10 @@ body {
   color: var(--text-muted);
   padding-bottom: 12px;
   font-weight: 300;
+  line-height: 48px;
 }
 
 .btn-add {
-  margin-left: 12px;
   height: 48px;
   padding: 0 24px;
   background: var(--accent);

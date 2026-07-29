@@ -8,8 +8,6 @@ export default function Timer() {
   const [customMin, setCustomMin] = useState('');
   const [customSec, setCustomSec] = useState('');
 
-  const pad = (val: string) => val.padStart(2, '0');
-
   const addCustom = () => {
     const h = parseInt(customHours || '0', 10);
     const m = parseInt(customMin || '0', 10);
@@ -88,7 +86,9 @@ export default function Timer() {
           />
           <label>s</label>
         </div>
-        <button className="btn-add" onClick={addCustom}>+ Add</button>
+        <div className="input-group btn-group">
+          <button className="btn-add" onClick={addCustom}>+ Add</button>
+        </div>
       </div>
 
       <div className="timer-grid">
